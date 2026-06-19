@@ -665,7 +665,8 @@ document.addEventListener('DOMContentLoaded', () => {
             '지능형 압력센서 연동 가변 제어 시스템 특허 적용',
             '급수 부하량에 맞춘 인버터 제어로 에너지 소비 최대 35% 절감',
             '상수도 가압장에서 수충격 및 압력 맥동 최소화 실현'
-          ]
+          ],
+          targetId: '#prod-booster'
         },
         {
           tag: '추천 02',
@@ -675,10 +676,10 @@ document.addEventListener('DOMContentLoaded', () => {
             '임펠러 다이내믹 밸런싱 및 마찰 감쇄 코팅 특허 기술 적용',
             '유동 마찰 저항 극소화로 펌프 운전 효율 극대화',
             '축 정렬 보정으로 베어링 마모 및 기계적 진동 45% 감소'
-          ]
+          ],
+          targetId: '#prod-volute'
         }
-      ],
-      targetId: '#products-showroom'
+      ]
     },
     sewage: {
       guideText: '"점도와 이물질 함량이 높은 하수 현장에서 막힘 없이 안정적인 운전을 보장합니다."',
@@ -691,7 +692,8 @@ document.addEventListener('DOMContentLoaded', () => {
             '이중 밀폐형 축봉 및 누설 감지 센서 특허 적용',
             'IP68 등급 완전 방수 설계로 지하수 및 하수 배수 신뢰성 확보',
             '침수 위험 감지 즉시 제어반 자동 차단하여 전동기 완벽 보호'
-          ]
+          ],
+          targetId: '#prod-submersible'
         },
         {
           tag: '추천 02',
@@ -701,7 +703,8 @@ document.addEventListener('DOMContentLoaded', () => {
             '고형물 막힘 방지 볼텍스 임펠러 특허 기술 적용',
             '섬유질이나 고형 협잡물 걸림 현상 방지로 돌발 고장 90% 예방',
             '내마모성 경화 특수 재질 적용으로 거친 입자 이송에 최적화'
-          ]
+          ],
+          targetId: '#prod-sludge'
         },
         {
           tag: '추천 03',
@@ -711,10 +714,10 @@ document.addEventListener('DOMContentLoaded', () => {
             '저마찰 편심 회전 로터 및 탄성 스테이터 특허 적용',
             '고점도 폐수나 탈수 케이크 등의 연속 정량 이송에 독보적 성능',
             '로터-스테이터 마찰 최소화 설계로 구동 에너지 25% 절감'
-          ]
+          ],
+          targetId: '#prod-mono'
         }
-      ],
-      targetId: '#products-showroom'
+      ]
     },
     chemical: {
       guideText: '"수처리 공정의 핵심인 약품 투입을 0.1ml 단위까지 정밀하게 제어하여 운영 효율을 극대화합니다."',
@@ -727,18 +730,58 @@ document.addEventListener('DOMContentLoaded', () => {
             '약품 주입 스트로크 미세 기계 조절 메커니즘 특허 적용',
             '정량 약품 투입 오차 범위를 ±0.5% 이내로 엄격하게 제어',
             '테플론 다이어프램이 펌프 구동부와 강한 약품을 완벽 격리'
-          ]
+          ],
+          targetId: '#prod-dosing'
         }
-      ],
-      targetId: '#products-showroom'
+      ]
     }
   };
+
+  // Click scroll and pulse highlight handler
+  function handleCardScrollAndHighlight(targetId) {
+    const target = document.querySelector(targetId);
+    if (target) {
+      // Check if target is hidden under inactive tabs
+      if (window.getComputedStyle(target).display === 'none') {
+        const category = target.getAttribute('data-category');
+        const tabBtn = document.querySelector(`.prod-tab-btn[data-tab="${category}"]`) || document.querySelector(`.prod-tab-btn[data-tab="all"]`);
+        if (tabBtn) {
+          tabBtn.click();
+        }
+      }
+
+      // Allow a brief delay for transition to complete
+      setTimeout(() => {
+        const header = document.querySelector('.header');
+        const headerHeight = header ? header.offsetHeight : 80;
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+
+        // Set up the premium highlight effect (float by 8px & aqua glow)
+        target.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        target.style.transform = 'translateY(-8px)';
+        target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
+        target.style.borderColor = 'var(--accent-color)';
+
+        // Revert styling after 2.5 seconds
+        setTimeout(() => {
+          target.style.transform = '';
+          target.style.boxShadow = '';
+          target.style.borderColor = '';
+        }, 2500);
+      }, 50);
+    }
+  }
 
   function updatePumpMatcher(category) {
     const data = matcherData[category];
     if (!data || !matcherResultContainer) return;
 
-    // Apply fade-out and fade-in animation
+    // Apply fade transition
     matcherResultContainer.style.opacity = '0';
     matcherResultContainer.style.transform = 'translateY(10px)';
     matcherResultContainer.style.transition = 'all 0.3s ease';
@@ -750,9 +793,9 @@ document.addEventListener('DOMContentLoaded', () => {
         pump.bullets.forEach(bullet => {
           bulletsHtml += `<li>${bullet}</li>`;
         });
-        
+
         pumpsHtml += `
-          <div class="matched-pump-card">
+          <a href="${pump.targetId}" class="matched-pump-card">
             <div class="matched-pump-header">
               <span class="pump-tag">${pump.tag}</span>
               <h4 class="pump-name">${pump.name}</h4>
@@ -761,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul class="pump-bullets">
               ${bulletsHtml}
             </ul>
-          </div>
+          </a>
         `;
       });
 
@@ -776,32 +819,24 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="matched-pumps-grid">
           ${pumpsHtml}
         </div>
-
-        <div class="matcher-footer">
-          <a href="${data.targetId}" class="btn btn-primary matcher-cta-btn" id="matcher-go-details">
-            전체 제품군 보기
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-          </a>
-        </div>
       `;
 
-      // Set up click scroll handler for new dynamic CTA button
-      const ctaBtn = document.getElementById('matcher-go-details');
-      if (ctaBtn) {
-        ctaBtn.addEventListener('click', (e) => {
+      // Attach click scroll and highlight listeners to dynamically rendered cards
+      const newPumpCards = matcherResultContainer.querySelectorAll('.matched-pump-card');
+      newPumpCards.forEach(card => {
+        card.addEventListener('click', (e) => {
           e.preventDefault();
-          const target = document.querySelector(data.targetId);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          const targetId = card.getAttribute('href');
+          handleCardScrollAndHighlight(targetId);
         });
-      }
+      });
 
       matcherResultContainer.style.opacity = '1';
       matcherResultContainer.style.transform = 'translateY(0)';
     }, 300);
   }
 
+  // Initialize matcher tabs behavior and bind initial cards
   if (matcherTabButtons.length > 0 && matcherResultContainer) {
     matcherTabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -812,17 +847,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Default scroll click handler for initial state
-    const initialCtaBtn = document.getElementById('matcher-go-details');
-    if (initialCtaBtn) {
-      initialCtaBtn.addEventListener('click', (e) => {
+    // Bind click events to initial matched pump cards
+    const initialPumpCards = document.querySelectorAll('#matched-pumps-grid .matched-pump-card');
+    initialPumpCards.forEach(card => {
+      card.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.querySelector('#products-showroom');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        const targetId = card.getAttribute('href');
+        handleCardScrollAndHighlight(targetId);
       });
-    }
+    });
   }
 
   // --- technology.html hash scroll and highlight logic ---
