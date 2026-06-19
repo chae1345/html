@@ -680,7 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: '#tech-card-iot'
+      targetId: 'technology.html#tech-card-iot'
     },
     sewage: {
       guideText: '"점도와 이물질 함량이 높은 하수 현장에서 막힘 없이 안정적인 운전을 보장합니다."',
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: '#tech-card-seal'
+      targetId: 'technology.html#tech-card-seal'
     },
     chemical: {
       guideText: '"수처리 공정의 핵심인 약품 투입을 0.1ml 단위까지 정밀하게 제어하여 운영 효율을 극대화합니다."',
@@ -732,7 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: '#tech-card-dosing'
+      targetId: 'technology.html#tech-card-dosing'
     }
   };
 
@@ -781,35 +781,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="matcher-footer">
           <a href="${data.targetId}" class="btn btn-primary matcher-cta-btn" id="matcher-go-details">
-            상세 사양 보기 (특허 기술 섹션)
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            상세 기술 설명 보기
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
       `;
-
-      // Set up click scroll handler for new dynamic CTA button
-      const ctaBtn = document.getElementById('matcher-go-details');
-      if (ctaBtn) {
-        ctaBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(data.targetId);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
-            // Add a visual highlight pulse effect to the target card
-            target.style.transition = 'all 0.3s ease';
-            target.style.transform = 'translateY(-12px)';
-            target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
-            target.style.borderColor = 'var(--accent-color)';
-            
-            setTimeout(() => {
-              target.style.transform = '';
-              target.style.boxShadow = '';
-              target.style.borderColor = '';
-            }, 2500);
-          }
-        });
-      }
 
       matcherResultContainer.style.opacity = '1';
       matcherResultContainer.style.transform = 'translateY(0)';
@@ -825,26 +801,29 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePumpMatcher(category);
       });
     });
+  }
 
-    // Default scroll click handler for initial state
-    const initialCtaBtn = document.getElementById('matcher-go-details');
-    if (initialCtaBtn) {
-      initialCtaBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector('#tech-card-iot');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          target.style.transition = 'all 0.3s ease';
-          target.style.transform = 'translateY(-12px)';
-          target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
-          target.style.borderColor = 'var(--accent-color)';
-          setTimeout(() => {
-            target.style.transform = '';
-            target.style.boxShadow = '';
-            target.style.borderColor = '';
-          }, 2500);
-        }
-      });
-    }
+  // --- technology.html hash scroll and highlight logic ---
+  if (window.location.hash && window.location.pathname.includes('technology.html')) {
+    // Wait slightly for DOM to settle
+    setTimeout(() => {
+      const hash = window.location.hash;
+      const target = document.querySelector(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Highlight effect
+        target.style.transition = 'all 0.3s ease';
+        target.style.transform = 'translateY(-12px)';
+        target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
+        target.style.borderColor = 'var(--accent-color)';
+        
+        setTimeout(() => {
+          target.style.transform = '';
+          target.style.boxShadow = '';
+          target.style.borderColor = '';
+        }, 2500);
+      }
+    }, 600);
   }
 });
