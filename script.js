@@ -649,15 +649,202 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (simTabButtons.length > 0) {
-    simTabButtons.forEach(btn => {
+  }
+
+  // --- Solution Matching Tool Logic ---
+  const matcherTabButtons = document.querySelectorAll('.matcher-tab-btn');
+  const matcherResultContainer = document.getElementById('matcher-result-container');
+
+  const matcherData = {
+    water: {
+      guideText: '"가정 및 산업용 상수도 공급의 최적화된 압력을 보장합니다."',
+      pumps: [
+        {
+          tag: '추천 01',
+          name: '부스터 펌프 시스템',
+          summary: '실시간 유량 감지형 가변 압력 제어를 지원하는 지능형 시스템입니다.',
+          bullets: [
+            '지능형 압력센서 연동 가변 제어 시스템 특허 적용',
+            '급수 부하량에 맞춘 인버터 제어로 에너지 소비 최대 35% 절감',
+            '상수도 가압장에서 수충격 및 압력 맥동 최소화 실현'
+          ]
+        },
+        {
+          tag: '추천 02',
+          name: '편흡입 볼류트 펌프',
+          summary: '구조가 단순하여 유지보수가 매우 우수한 원심 처리수 이송 펌프입니다.',
+          bullets: [
+            '임펠러 다이내믹 밸런싱 및 마찰 감쇄 코팅 특허 기술 적용',
+            '유동 마찰 저항 극소화로 펌프 운전 효율 극대화',
+            '축 정렬 보정으로 베어링 마모 및 기계적 진동 45% 감소'
+          ]
+        }
+      ],
+      targetId: '#tech-card-iot'
+    },
+    sewage: {
+      guideText: '"점도와 이물질 함량이 높은 하수 현장에서 막힘 없이 안정적인 운전을 보장합니다."',
+      pumps: [
+        {
+          tag: '추천 01',
+          name: '수중 펌프',
+          summary: '모터가 물속에 잠겨 작동하며, 침수 차단 능력이 뛰어난 배수용 펌프입니다.',
+          bullets: [
+            '이중 밀폐형 축봉 및 누설 감지 센서 특허 적용',
+            'IP68 등급 완전 방수 설계로 지하수 및 하수 배수 신뢰성 확보',
+            '침수 위험 감지 즉시 제어반 자동 차단하여 전동기 완벽 보호'
+          ]
+        },
+        {
+          tag: '추천 02',
+          name: '슬러지 펌프',
+          summary: '고농도의 찌꺼기 및 이물질 함유 유체를 와류로 막힘없이 이송합니다.',
+          bullets: [
+            '고형물 막힘 방지 볼텍스 임펠러 특허 기술 적용',
+            '섬유질이나 고형 협잡물 걸림 현상 방지로 돌발 고장 90% 예방',
+            '내마모성 경화 특수 재질 적용으로 거친 입자 이송에 최적화'
+          ]
+        },
+        {
+          tag: '추천 03',
+          name: '일축나사식 모노 펌프',
+          summary: '맥동 없이 고점도 유체를 일정한 양으로 추진하는 용적식 나사 펌프입니다.',
+          bullets: [
+            '저마찰 편심 회전 로터 및 탄성 스테이터 특허 적용',
+            '고점도 폐수나 탈수 케이크 등의 연속 정량 이송에 독보적 성능',
+            '로터-스테이터 마찰 최소화 설계로 구동 에너지 25% 절감'
+          ]
+        }
+      ],
+      targetId: '#tech-card-seal'
+    },
+    chemical: {
+      guideText: '"수처리 공정의 핵심인 약품 투입을 0.1ml 단위까지 정밀하게 제어하여 운영 효율을 극대화합니다."',
+      pumps: [
+        {
+          tag: '추천 01',
+          name: 'PAC 정량 펌프 (다이어프램형)',
+          summary: '미세 스트로크 조절을 통해 화학 약품을 오차 없이 정밀 주입합니다.',
+          bullets: [
+            '약품 주입 스트로크 미세 기계 조절 메커니즘 특허 적용',
+            '정량 약품 투입 오차 범위를 ±0.5% 이내로 엄격하게 제어',
+            '테플론 다이어프램이 펌프 구동부와 강한 약품을 완벽 격리'
+          ]
+        }
+      ],
+      targetId: '#tech-card-dosing'
+    }
+  };
+
+  function updatePumpMatcher(category) {
+    const data = matcherData[category];
+    if (!data || !matcherResultContainer) return;
+
+    // Apply fade-out and fade-in animation
+    matcherResultContainer.style.opacity = '0';
+    matcherResultContainer.style.transform = 'translateY(10px)';
+    matcherResultContainer.style.transition = 'all 0.3s ease';
+
+    setTimeout(() => {
+      let pumpsHtml = '';
+      data.pumps.forEach(pump => {
+        let bulletsHtml = '';
+        pump.bullets.forEach(bullet => {
+          bulletsHtml += `<li>${bullet}</li>`;
+        });
+        
+        pumpsHtml += `
+          <div class="matched-pump-card">
+            <div class="matched-pump-header">
+              <span class="pump-tag">${pump.tag}</span>
+              <h4 class="pump-name">${pump.name}</h4>
+            </div>
+            <p class="pump-summary">${pump.summary}</p>
+            <ul class="pump-bullets">
+              ${bulletsHtml}
+            </ul>
+          </div>
+        `;
+      });
+
+      matcherResultContainer.innerHTML = `
+        <div class="matcher-guide-card">
+          <div class="matcher-guide-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </div>
+          <p class="matcher-guide-text">${data.guideText}</p>
+        </div>
+
+        <div class="matched-pumps-grid">
+          ${pumpsHtml}
+        </div>
+
+        <div class="matcher-footer">
+          <a href="${data.targetId}" class="btn btn-primary matcher-cta-btn" id="matcher-go-details">
+            상세 사양 보기 (특허 기술 섹션)
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </a>
+        </div>
+      `;
+
+      // Set up click scroll handler for new dynamic CTA button
+      const ctaBtn = document.getElementById('matcher-go-details');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(data.targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Add a visual highlight pulse effect to the target card
+            target.style.transition = 'all 0.3s ease';
+            target.style.transform = 'translateY(-12px)';
+            target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
+            target.style.borderColor = 'var(--accent-color)';
+            
+            setTimeout(() => {
+              target.style.transform = '';
+              target.style.boxShadow = '';
+              target.style.borderColor = '';
+            }, 2500);
+          }
+        });
+      }
+
+      matcherResultContainer.style.opacity = '1';
+      matcherResultContainer.style.transform = 'translateY(0)';
+    }, 300);
+  }
+
+  if (matcherTabButtons.length > 0 && matcherResultContainer) {
+    matcherTabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const pumpId = btn.getAttribute('data-sim');
-        switchPumpSim(pumpId);
+        matcherTabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const category = btn.getAttribute('data-category');
+        updatePumpMatcher(category);
       });
     });
 
-    // Load default
-    switchPumpSim('booster');
+    // Default scroll click handler for initial state
+    const initialCtaBtn = document.getElementById('matcher-go-details');
+    if (initialCtaBtn) {
+      initialCtaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector('#tech-card-iot');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.style.transition = 'all 0.3s ease';
+          target.style.transform = 'translateY(-12px)';
+          target.style.boxShadow = 'var(--shadow-glow), var(--shadow-lg)';
+          target.style.borderColor = 'var(--accent-color)';
+          setTimeout(() => {
+            target.style.transform = '';
+            target.style.boxShadow = '';
+            target.style.borderColor = '';
+          }, 2500);
+        }
+      });
+    }
   }
 });

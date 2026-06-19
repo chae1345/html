@@ -3757,4 +3757,240 @@ textarea.form-input {
   }
 }
 
+/* --- Solution Matching Tool Styles --- */
+.matcher-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: var(--bg-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+
+.matcher-question {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+.matcher-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.matcher-tab-btn {
+  background: var(--bg-color);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  padding: 16px 20px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.matcher-tab-btn svg {
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+}
+
+.matcher-tab-btn:hover {
+  border-color: var(--accent-color);
+  background-color: var(--bg-white);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.matcher-tab-btn:hover svg {
+  color: var(--accent-color);
+}
+
+.matcher-tab-btn.active {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  color: var(--text-light);
+  border-color: transparent;
+  box-shadow: var(--shadow-glow), var(--shadow-md);
+}
+
+.matcher-tab-btn.active svg {
+  color: var(--secondary-color);
+}
+
+.matcher-result-box {
+  border-top: 1px solid var(--border-color);
+  padding-top: 32px;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.matcher-guide-card {
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.04) 0%, rgba(0, 210, 211, 0.08) 100%);
+  border-left: 4px solid var(--accent-color);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.matcher-guide-icon {
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.matcher-guide-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.matched-pumps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.matched-pump-card {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: var(--transition-smooth);
+}
+
+.matched-pump-card:hover {
+  background-color: var(--bg-white);
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-4px);
+}
+
+.matched-pump-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pump-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  background-color: rgba(0, 168, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.pump-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.pump-summary {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.pump-bullets {
+  list-style: none;
+}
+
+.pump-bullets li {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.pump-bullets li::before {
+  content: '•';
+  position: absolute;
+  left: 4px;
+  color: var(--accent-color);
+  font-weight: 900;
+}
+
+.matcher-footer {
+  text-align: center;
+}
+
+.matcher-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-radius: var(--radius-full);
+}
+
+.matcher-cta-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.matcher-cta-btn:hover svg {
+  transform: translateY(3px);
+}
+
+@media (max-width: 768px) {
+  .matcher-container {
+    padding: 24px 16px;
+  }
+  
+  .matcher-tabs {
+    gap: 8px;
+  }
+  
+  .matcher-tab-btn {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    gap: 4px;
+  }
+  
+  .matcher-tab-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .matcher-guide-card {
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .matcher-guide-text {
+    font-size: 0.95rem;
+  }
+  
+  .matched-pumps-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+
+
 
