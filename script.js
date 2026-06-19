@@ -636,8 +636,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (simSvgContainer) simSvgContainer.innerHTML = data.svg;
     if (simTitle) simTitle.textContent = data.title;
     if (simDesc) simDesc.textContent = data.desc;
-    if (simPatentName) simPatentName.textContent = data.patentName || '';
-    if (simPatentEffect) simPatentEffect.textContent = data.patentEffect || '';
+    
+    // Patent info handling
+    const patentBox = document.getElementById('sim-patent-box');
+    if (data.patentName) {
+      if (simPatentName) simPatentName.textContent = data.patentName;
+      if (simPatentEffect) simPatentEffect.textContent = data.patentEffect || '';
+      if (patentBox) patentBox.style.display = 'block';
+    } else {
+      if (patentBox) patentBox.style.display = 'none';
+    }
 
     if (simFeatures) {
       simFeatures.innerHTML = data.features.map(feat => `
@@ -647,6 +655,19 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `).join('');
     }
+  }
+
+  // Bind simulation tab click listeners & initialize
+  if (simTabButtons.length > 0) {
+    simTabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pumpId = btn.getAttribute('data-sim');
+        switchPumpSim(pumpId);
+      });
+    });
+
+    // Initialize with first simulation ('booster')
+    switchPumpSim('booster');
   }
 
   // --- Solution Matching Tool Logic ---
