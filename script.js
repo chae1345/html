@@ -649,8 +649,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  }
-
   // --- Solution Matching Tool Logic ---
   const matcherTabButtons = document.querySelectorAll('.matcher-tab-btn');
   const matcherResultContainer = document.getElementById('matcher-result-container');
@@ -680,7 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: 'technology.html#tech-card-iot'
+      targetId: '#products-showroom'
     },
     sewage: {
       guideText: '"점도와 이물질 함량이 높은 하수 현장에서 막힘 없이 안정적인 운전을 보장합니다."',
@@ -716,7 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: 'technology.html#tech-card-seal'
+      targetId: '#products-showroom'
     },
     chemical: {
       guideText: '"수처리 공정의 핵심인 약품 투입을 0.1ml 단위까지 정밀하게 제어하여 운영 효율을 극대화합니다."',
@@ -732,7 +730,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         }
       ],
-      targetId: 'technology.html#tech-card-dosing'
+      targetId: '#products-showroom'
     }
   };
 
@@ -781,11 +779,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="matcher-footer">
           <a href="${data.targetId}" class="btn btn-primary matcher-cta-btn" id="matcher-go-details">
-            상세 기술 설명 보기
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            전체 제품군 보기
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
           </a>
         </div>
       `;
+
+      // Set up click scroll handler for new dynamic CTA button
+      const ctaBtn = document.getElementById('matcher-go-details');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(data.targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
 
       matcherResultContainer.style.opacity = '1';
       matcherResultContainer.style.transform = 'translateY(0)';
@@ -801,6 +811,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePumpMatcher(category);
       });
     });
+
+    // Default scroll click handler for initial state
+    const initialCtaBtn = document.getElementById('matcher-go-details');
+    if (initialCtaBtn) {
+      initialCtaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector('#products-showroom');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
   }
 
   // --- technology.html hash scroll and highlight logic ---
